@@ -1,50 +1,63 @@
-# Welcome to your Expo app 👋
+# Counters
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+## Description
 
-## Get started
+Counters is a mobile application developed with React Native that allows you to create and manage multiple counters simultaneously. Whether it's tracking the number of cigarettes smoked, glasses of water drunk, or any other item you want to count, Counters makes this task simple and intuitive. The app also offers widgets for quick access to your counters from the home screen.
 
-1. Install dependencies
+## Features
 
-   ```bash
-   npm install
-   ```
+- **Create Custom Counters**: Add counters for any item you want to track.
+- **Manage Multiple Counters**: Handle multiple counters simultaneously with a user-friendly interface.
+- **Widgets**: Quickly access your favorite counters directly from your home screen.
+- **History and Statistics**: View the history of your counters and visualize statistics to track your progress.
 
-2. Start the app
+## Installation
 
-   ```bash
-    npx expo start
-   ```
+1. Clone the repository
 
-In the output, you'll find options to open the app in a
+    ```bash
+    git clone https://github.com/dlnclement/counters.git
+    cd counters
+    ```
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+2. Install dependencies
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+    ```bash
+    npm install
+    ```
 
-## Get a fresh project
+3. Run the application
 
-When you're ready, run:
+    ```bash
+    npx react-native run-android  # For Android
+    npx react-native run-ios      # For iOS
+    ```
 
-```bash
-npm run reset-project
-```
+## Usage
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+1. **Add a Counter**:
+    - Open the app.
+    - Click on the "Add Counter" button.
+    - Enter the details of your counter (name, description, etc.).
+    - Click "Save".
 
-## Learn more
+2. **Manage Counters**:
+    - On the main page, you will see a list of all your counters.
+    - Click on a counter to increase or decrease its value.
+    - To edit or delete a counter, click on the settings button associated with each counter.
 
-To learn more about developing your project with Expo, look at the following resources:
+3. **Widgets**:
+    - To add a widget, go to your home screen.
+    - Hold an empty space and select the option to add a widget.
+    - Choose the "Counters" widget and select the counter you want to display.
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+## Technologies
 
-## Join the community
+- [React Native](https://reactnative.dev/)
+- [Redux](https://redux.js.org/) for state management
+- [React Navigation](https://reactnavigation.org/) for navigation
+- [Expo](https://expo.dev/) (optional) to simplify development
 
-Join our community of developers creating universal apps.
+## Contact
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+For any questions or suggestions, feel free to open an issue or contact me by email at delannoyclement.pro@gmail.com.
