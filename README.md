@@ -1,5 +1,3 @@
-# Counters
-
 ![Banner](./assets/images/count-it-all.png)
 
 ## Description
