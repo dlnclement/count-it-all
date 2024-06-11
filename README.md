@@ -1,5 +1,7 @@
 # Counters
 
+![Banner](./assets/images/count-it-all.png)
+
 ## Description
 
 Counters is a mobile application developed with React Native that allows you to create and manage multiple counters simultaneously. Whether it's tracking the number of cigarettes smoked, glasses of water drunk, or any other item you want to count, Counters makes this task simple and intuitive. The app also offers widgets for quick access to your counters from the home screen.

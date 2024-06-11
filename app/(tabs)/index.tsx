@@ -1,51 +1,36 @@
-import { Image, StyleSheet, Platform } from 'react-native';
-
-import { HelloWave } from '@/components/HelloWave';
+import { Image, StyleSheet, Dimensions, View, Text, TouchableOpacity } from 'react-native';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+import { useAsyncStorage } from '@react-native-async-storage/async-storage';
+
+import { useEffect, useState } from 'react';
 
 export default function HomeScreen() {
+
+  const [count, setCount] = useState(0)
+  const { setItem } = useAsyncStorage('count')
+
+  useEffect(() => {
+    setItem(`${count}`)
+  }, [count])
+
   return (
     <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
+      headerBackgroundColor={{ light: '#A1CEDC', dark: '#A1CEDC' }}
       headerImage={
         <Image
-          source={require('@/assets/images/partial-react-logo.png')}
+          source={require('@/assets/images/count-it-all.png')}
           style={styles.reactLogo}
         />
       }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({ ios: 'cmd + d', android: 'cmd + m' })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
+      <View style={styles.counter}>
+        <TouchableOpacity onPress={() => setCount(count - 1)} style={styles.counterBtn} disabled={count <= 0}>
+          <Text style={styles.counterText}>-</Text>
+        </TouchableOpacity>
+        <Text style={styles.count}>{count}</Text>
+        <TouchableOpacity onPress={() => setCount(count + 1)} style={styles.counterBtn}>
+          <Text style={styles.counterText}>+</Text>
+        </TouchableOpacity>
+      </View>
     </ParallaxScrollView>
   );
 }
@@ -61,10 +46,32 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   reactLogo: {
-    height: 178,
-    width: 290,
+    height: 250,
+    width: Dimensions.get('screen').width,
     bottom: 0,
     left: 0,
     position: 'absolute',
   },
+  counter: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 20
+  },
+  counterBtn: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    width: 30,
+    height: 30,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 15,
+  },
+  counterText: {
+    fontSize: 24,
+  },
+  count: {
+    fontSize: 24,
+    color: "#FFFFFF",
+  }
 });
