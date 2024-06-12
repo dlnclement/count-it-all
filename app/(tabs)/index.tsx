@@ -1,62 +1,92 @@
-import { Image, StyleSheet, Dimensions, View, Text, TouchableOpacity } from 'react-native';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { useAsyncStorage } from '@react-native-async-storage/async-storage';
+import { StyleSheet, View, Text, TouchableOpacity, SafeAreaView } from 'react-native';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function HomeScreen() {
 
-  const [count, setCount] = useState(0)
-  const { setItem } = useAsyncStorage('count')
+  const [counters, setCounters] = useState([])
 
-  useEffect(() => {
-    setItem(`${count}`)
-  }, [count])
+  const { top } = useSafeAreaInsets()
+
+  const addCounter = () => {
+    const data = [...counters, { name: `compteur ${counters.length + 1}`, value: 0 }]
+    setCounters(data)
+  }
+
+  const handleChange = (index, value) => {
+    const data = [...counters]
+    data[index].value = value
+    setCounters(data)
+  }
 
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#A1CEDC' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/count-it-all.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <View style={styles.counter}>
-        <TouchableOpacity onPress={() => setCount(count - 1)} style={styles.counterBtn} disabled={count <= 0}>
-          <Text style={styles.counterText}>-</Text>
-        </TouchableOpacity>
-        <Text style={styles.count}>{count}</Text>
-        <TouchableOpacity onPress={() => setCount(count + 1)} style={styles.counterBtn}>
-          <Text style={styles.counterText}>+</Text>
-        </TouchableOpacity>
+    <SafeAreaView>
+      <View style={{ ...styles.header, marginTop: -top, paddingTop: top + 30 }}>
+        <Text style={styles.headerTitle}>Mes compteurs</Text>
       </View>
-    </ParallaxScrollView>
+      <TouchableOpacity style={styles.button} onPress={addCounter}><Text>Add counter</Text></TouchableOpacity>
+
+      {counters.map(({ name, value }, index) => <Counter key={name} name={name} value={value} handleChange={(e) => handleChange(index, e)} />)}
+    </SafeAreaView>
   );
 }
 
+const Counter = ({ name, value, handleChange }) => {
+
+  const updateValue = (val: any) => {
+    handleChange(val)
+  }
+
+  return (
+    <View style={styles.counterContainer}>
+      <Text>{name}</Text>
+      <View style={styles.counter}>
+        <TouchableOpacity onPress={() => updateValue(value - 1)} style={styles.counterBtn} disabled={value <= 0}>
+          <Text style={styles.counterText}>-</Text>
+        </TouchableOpacity>
+        <Text style={styles.count}>{value}</Text>
+        <TouchableOpacity onPress={() => updateValue(value + 1)} style={styles.counterBtn}>
+          <Text style={styles.counterText}>+</Text>
+        </TouchableOpacity>
+      </View>
+
+    </View>
+  )
+}
+
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+  header: {
+    alignItems: "center",
+    backgroundColor: "red",
+    paddingBottom: 30,
+    marginBottom: 34
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+  headerTitle: {
+    color: "#FFF",
+    fontSize: 24
   },
-  reactLogo: {
-    height: 250,
-    width: Dimensions.get('screen').width,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  counterContainer: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: 20,
+    backgroundColor: "#EBEBEB"
   },
   counter: {
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    gap: 20
+    gap: 10
+  },
+  button: {
+    paddingVertical: 12,
+    paddingHorizontal: 12,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "blue"
   },
   counterBtn: {
     display: "flex",
@@ -71,7 +101,6 @@ const styles = StyleSheet.create({
     fontSize: 24,
   },
   count: {
-    fontSize: 24,
-    color: "#FFFFFF",
+    fontSize: 24
   }
 });
