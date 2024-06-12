@@ -10,6 +10,7 @@ export const Colors = {
   primary: "#4000F8",
   secondary: "#53A0CB",
   primaryExtraLight: "#F5F2FF",
+  red: "#F80000",
 
   light: {
     text: '#11181C',

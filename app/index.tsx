@@ -1,20 +1,24 @@
-import { StyleSheet, View, Text, TouchableOpacity, SafeAreaView, Dimensions, Animated, FlatList } from 'react-native';
+import { StyleSheet, View, Text, SafeAreaView, Dimensions, FlatList } from 'react-native';
 
 import { useState } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { LinearGradient } from 'expo-linear-gradient';
 import { Colors } from '@/constants/Colors';
 import { GestureHandlerRootView, Swipeable } from 'react-native-gesture-handler';
+import Counter from '@/components/Counter';
+import Button from '@/components/Button';
+import emojiList from '@/utils/emoji.json';
 
 const { height } = Dimensions.get('screen')
 
 export default function Counters() {
 
   const [counters, setCounters] = useState<[{ name: string, value: any }] | []>([])
-  const { top, bottom } = useSafeAreaInsets()
+  const { top } = useSafeAreaInsets()
+  const emojiKeys = Object.keys(emojiList)
 
   const addCounter = () => {
-    const data = [...counters, { name: `compteur ${counters.length + 1}`, value: 0 }]
+    const emoji = emojiKeys[Math.floor(Math.random() * emojiKeys.length)];
+    const data = [...counters, { name: `compteur ${counters.length + 1}`, value: 0, emoji }]
     setCounters(data)
   }
 
@@ -28,7 +32,9 @@ export default function Counters() {
     setCounters([...counters.filter((_, idx) => idx !== index)])
   }
 
-  const renderItem = (item, index) => <Counter key={item.name} name={item.name} value={item.value} handleChange={(e) => handleChange(index, e)} handleRemove={() => handleRemove(index)} />
+  const renderItem = (item: any, index: number) => {
+    return <Counter key={item.name} {...item} handleChange={(e) => handleChange(index, e)} handleRemove={() => handleRemove(index)} />
+  }
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
@@ -37,17 +43,12 @@ export default function Counters() {
           <Text style={styles.headerTitle}>Mes compteurs</Text>
         </View>
         <View style={styles.container}>
-          <TouchableOpacity onPress={addCounter}>
-            <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} colors={[Colors.primary, Colors.secondary]} style={styles.button}>
-              <Text style={styles.buttonText}>Add counter</Text>
-            </LinearGradient>
-          </TouchableOpacity>
-
+          <Button title='Nouveau compteur' onPress={addCounter} />
           <FlatList
             contentContainerStyle={styles.counters}
             data={counters}
             renderItem={i => renderItem(i.item, i.index)}
-            keyExtractor={item => item.id}
+            keyExtractor={item => item.key}
           />
 
         </View>
@@ -55,56 +56,6 @@ export default function Counters() {
     </GestureHandlerRootView>
 
   );
-}
-
-type CounterValues = {
-  name: string,
-  value: any,
-  handleChange: (value: any) => void,
-  handleRemove: () => void
-}
-
-const Counter = ({ name, value, handleChange, handleRemove }: CounterValues) => {
-
-  const updateValue = (val: any) => {
-    handleChange(val)
-  }
-
-  const renderRightActions = (progress: Animated.AnimatedInterpolation, dragAnimatedValue: Animated.AnimatedInterpolation) => {
-
-    const opacity = dragAnimatedValue.interpolate({
-      inputRange: [-50, 0],
-      outputRange: [1, 0],
-      extrapolate: 'clamp',
-    });
-
-    return (
-      <View style={styles.swipedRow}>
-        <Animated.View style={[styles.deleteButton, { opacity }]}>
-          <TouchableOpacity>
-            <Text style={styles.deleteButtonText}>Delete</Text>
-          </TouchableOpacity>
-        </Animated.View>
-      </View>
-    );
-  };
-
-  return (
-    <Swipeable renderRightActions={renderRightActions} onSwipeableWillOpen={handleRemove} rightThreshold={90}>
-      <View style={styles.counterContainer}>
-        <Text style={styles.counterTitle}>{name}</Text>
-        <View style={styles.counter}>
-          <TouchableOpacity onPress={() => updateValue(value - 1)} style={styles.counterBtn} disabled={value <= 0}>
-            <Text style={styles.counterText}>-</Text>
-          </TouchableOpacity>
-          <Text style={styles.count}>{value}</Text>
-          <TouchableOpacity onPress={() => updateValue(value + 1)} style={{ ...styles.counterBtn, backgroundColor: Colors.primary }}>
-            <Text style={{ ...styles.counterText, color: "#FFF" }}>+</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </Swipeable>
-  )
 }
 
 const styles = StyleSheet.create({
@@ -124,76 +75,5 @@ const styles = StyleSheet.create({
   },
   counters: {
     gap: 20
-  },
-
-  button: {
-    paddingHorizontal: 20,
-    paddingVertical: 16,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 8
-  },
-  buttonText: {
-    color: "#FFFFFF",
-    fontSize: 18
-  },
-
-  counterContainer: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    padding: 20,
-    backgroundColor: Colors.primaryExtraLight,
-    height: 80,
-    borderRadius: 12
-  },
-  counter: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 10
-  },
-  counterTitle: {
-    fontSize: 18
-  },
-  counterBtn: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    width: 30,
-    height: 30,
-    backgroundColor: "#FFFFFF",
-    borderRadius: 15,
-  },
-  counterText: {
-    fontSize: 18,
-  },
-  count: {
-    fontSize: 18
-  },
-
-  swipedRow: {
-    flexDirection: 'row',
-    flex: 1,
-    alignItems: 'center',
-    paddingLeft: 5,
-    minHeight: 80,
-  },
-  deleteButton: {
-    backgroundColor: '#b60000',
-    flexDirection: 'row',
-    alignItems: "center",
-    justifyContent: 'flex-end',
-    height: '100%',
-    flex: 1,
-    borderRadius: 12,
-    paddingHorizontal: 20
-  },
-  deleteButtonText: {
-    color: '#fcfcfc',
-    fontWeight: 'bold',
-    padding: 3,
-  },
+  }
 });
