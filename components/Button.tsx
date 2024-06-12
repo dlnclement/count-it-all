@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        borderRadius: 8
+        borderRadius: 8,
     },
     buttonText: {
         color: "#FFFFFF",

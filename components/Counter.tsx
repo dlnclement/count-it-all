@@ -20,8 +20,12 @@ export default function Counter({ name, value, emoji = 'coffee', handleChange, h
     return (
         <SwipeToLeft title='Supprimer' onSwipe={handleRemove}>
             <View style={styles.counterContainer}>
-                <Emoji name={emoji} style={{ fontSize: 22 }} />
-                <Text style={styles.counterTitle}>{name}</Text>
+                <View style={styles.counterContainerTitle}>
+                    <View style={styles.counterSquare}>
+                        <Emoji name={emoji} style={{ fontSize: 22 }} />
+                    </View>
+                    <Text style={styles.counterTitle}>{name}</Text>
+                </View>
                 <View style={styles.counter}>
                     <TouchableOpacity onPress={() => updateValue(value - 1)} style={styles.counterBtn} disabled={value <= 0}>
                         <Text style={styles.counterText}>-</Text>
@@ -36,6 +40,16 @@ export default function Counter({ name, value, emoji = 'coffee', handleChange, h
     )
 }
 
+const Shadow = {
+    shadowColor: "#000",
+    shadowOpacity: 0.2,
+    shadowOffset: {
+        width: 0,
+        height: 0
+    },
+    shadowRadius: 6
+}
+
 const styles = StyleSheet.create({
     counterContainer: {
         display: "flex",
@@ -43,7 +57,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "space-between",
         padding: 20,
-        backgroundColor: Colors.primaryExtraLight,
+        backgroundColor: Colors.primary5,
         height: 80,
         borderRadius: 12
     },
@@ -52,6 +66,24 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         gap: 10
+    },
+    counterContainerTitle: {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 20
+    },
+    counterSquare: {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        width: 40,
+        height: 40,
+        backgroundColor: "#FFF",
+        borderRadius: 8,
+        borderWidth: 2,
+        borderColor: Colors.primary30,
+        ...Shadow
     },
     counterTitle: {
         fontSize: 18
@@ -64,6 +96,7 @@ const styles = StyleSheet.create({
         height: 30,
         backgroundColor: "#FFFFFF",
         borderRadius: 15,
+        ...Shadow
     },
     counterText: {
         fontSize: 18,
