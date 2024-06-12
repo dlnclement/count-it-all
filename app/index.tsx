@@ -24,7 +24,11 @@ export default function Counters() {
     setCounters(data)
   }
 
-  const renderItem = (item, index) => <Counter key={item.name} name={item.name} value={item.value} handleChange={(e) => handleChange(index, e)} />
+  const handleRemove = (index: number) => {
+    setCounters([...counters.filter((_, idx) => idx !== index)])
+  }
+
+  const renderItem = (item, index) => <Counter key={item.name} name={item.name} value={item.value} handleChange={(e) => handleChange(index, e)} handleRemove={() => handleRemove(index)} />
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
@@ -56,10 +60,11 @@ export default function Counters() {
 type CounterValues = {
   name: string,
   value: any,
-  handleChange: any
+  handleChange: (value: any) => void,
+  handleRemove: () => void
 }
 
-const Counter = ({ name, value, handleChange }: CounterValues) => {
+const Counter = ({ name, value, handleChange, handleRemove }: CounterValues) => {
 
   const updateValue = (val: any) => {
     handleChange(val)
@@ -68,7 +73,7 @@ const Counter = ({ name, value, handleChange }: CounterValues) => {
   const renderRightActions = (progress: Animated.AnimatedInterpolation, dragAnimatedValue: Animated.AnimatedInterpolation) => {
 
     const opacity = dragAnimatedValue.interpolate({
-      inputRange: [-200, 0],
+      inputRange: [-50, 0],
       outputRange: [1, 0],
       extrapolate: 'clamp',
     });
@@ -85,7 +90,7 @@ const Counter = ({ name, value, handleChange }: CounterValues) => {
   };
 
   return (
-    <Swipeable renderRightActions={renderRightActions} onSwipeableOpen={(event) => console.log(event)} dragOffsetFromRightEdge={1}>
+    <Swipeable renderRightActions={renderRightActions} onSwipeableWillOpen={handleRemove} rightThreshold={90}>
       <View style={styles.counterContainer}>
         <Text style={styles.counterTitle}>{name}</Text>
         <View style={styles.counter}>
@@ -122,8 +127,8 @@ const styles = StyleSheet.create({
   },
 
   button: {
-    height: 40,
-    paddingHorizontal: 12,
+    paddingHorizontal: 20,
+    paddingVertical: 16,
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
