@@ -13,13 +13,19 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSSupportsLiveActivities": true,
+        "NSSupportsLiveActivitiesFrequentUpdates": true
+      },
+      "bundleIdentifier": "com.dln.countitall"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.dln.countitall"
     },
     "web": {
       "bundler": "metro",
@@ -27,7 +33,14 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
-      "expo-router"
+      "expo-router",
+      [
+        "react-native-widget-extension",
+        {
+          "frequentUpdates": true,
+          "widgetsFolder": "SampleWidgetExtension"
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true
