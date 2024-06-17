@@ -3,17 +3,22 @@ import { StyleSheet, View, Text, SafeAreaView, Dimensions, FlatList } from 'reac
 import { useEffect, useState } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Colors } from '@/constants/Colors';
-import { GestureHandlerRootView, Swipeable } from 'react-native-gesture-handler';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Counter from '@/components/Counter';
 import Button from '@/components/Button';
 import emojiList from '@/utils/emoji.json';
-import AsyncStorage, { useAsyncStorage } from '@react-native-async-storage/async-storage';
+import { useAsyncStorage } from '@react-native-async-storage/async-storage';
 
 const { height } = Dimensions.get('screen')
 
+type Counter = {
+  id: number;
+  count: number;
+};
+
 export default function Counters() {
 
-  const [counters, setCounters] = useState<[{ name: string, value: any }] | []>([])
+  const [counters, setCounters] = useState<Counter[]>([])
   const { top } = useSafeAreaInsets()
   const { setItem, getItem } = useAsyncStorage("counters")
 

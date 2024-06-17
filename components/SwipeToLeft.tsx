@@ -2,7 +2,7 @@ import { Colors } from "@/constants/Colors";
 import { Animated, TouchableOpacity, View, Text, StyleSheet } from "react-native";
 import { Swipeable } from "react-native-gesture-handler";
 
-type SwipeToLeftValues = {
+interface SwipeToLeftValues {
     children: any,
     title: string,
     onSwipe: () => void,

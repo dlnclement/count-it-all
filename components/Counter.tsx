@@ -3,7 +3,7 @@ import Emoji from 'react-native-emoji';
 import { Colors } from '@/constants/Colors';
 import SwipeToLeft from './SwipeToLeft';
 
-type CounterValues = {
+interface CounterValues {
     name: string,
     value: any,
     emoji: string,
@@ -13,7 +13,7 @@ type CounterValues = {
 
 export default function Counter({ name, value, emoji = 'coffee', handleChange, handleRemove }: CounterValues) {
 
-    const updateValue = (val: any) => {
+    const updateValue = (val: number) => {
         handleChange(val)
     }
 

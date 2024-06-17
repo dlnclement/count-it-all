@@ -2,7 +2,7 @@ import { Colors } from "@/constants/Colors"
 import { LinearGradient } from "expo-linear-gradient"
 import { TouchableOpacity, Text, StyleSheet } from "react-native"
 
-type ButtonValues = {
+interface ButtonValues {
     title: string,
     onPress: () => void
 }
